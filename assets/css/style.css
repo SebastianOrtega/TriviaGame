@@ -38,7 +38,11 @@ h1{
 }
 p:hover{
     background-color: blue;
+    border: 5px;
+    border-style: solid;
     opacity: .5;
+    color: white;
+    border-color: black;
 
 }
 p{
@@ -46,9 +50,10 @@ p{
 
 }
 .restart{
-    margin-top:3%; 
+    margin:3%; 
     font-size: 4vw;
     font-style: italic;
     font-weight: bold;
+
 }
 

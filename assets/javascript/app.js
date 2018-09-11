@@ -117,6 +117,7 @@ $(document).ready(function () {
 
     function timer() {
         questionTimer--;
+        console.log("QuestionTimer: " + questionTimer);
         $(".timeRemaining").html("Time Remaining: " + questionTimer + " Seconds");
         if (questionTimer > 0 && !finish) {
             secondTimer = setTimeout(timer, 1000);
@@ -127,11 +128,9 @@ $(document).ready(function () {
         else {
             $(".timeRemaining").text("");
             clearInterval(secondTimer);
-            //if (questionNumber < 4) {
             if (!finish)
                 unanswered++;
             startGame();
-            //}
         }
     }
 
@@ -167,8 +166,9 @@ $(document).ready(function () {
         } else {
             finishGame();
             console.log("termino preguntas");
-            if (finish)
+            if (finish) {
                 clearInterval(secondTimer);
+            }
 
         }
     }
@@ -176,11 +176,12 @@ $(document).ready(function () {
 
     function startGame() {
 
-        questionTimer = 10;
+        questionTimer = 30;
         $(".timeRemaining").text("Time Remaining: " + questionTimer + " Seconds");
         newQuestion();
-        secondTimer = setTimeout(timer, 1000);
-
+        if (!finish) {
+            secondTimer = setTimeout(timer, 1000);
+        }
 
 
     }
@@ -197,7 +198,7 @@ $(document).ready(function () {
         $(pa).text("Correct: " + correct);
         $(".question").append(pa);
         let pb = $("<p>");
-        $(pb).text("Inorrect: " + incorrect);
+        $(pb).text("Incorrect: " + incorrect);
         $(".question").append(pb)
         let pc = $("<p>");
         $(pc).text("Unanswered: " + unanswered)
@@ -218,6 +219,7 @@ $(document).ready(function () {
             let image = $("<img>");
             $(image).attr("src", eval(objeto).gif);
             $(image).attr("style", "margin: 0 auto");
+            $(image).addClass("img-fluid");
             $(".list").append(image);
             responseTimerFun();
         } else {

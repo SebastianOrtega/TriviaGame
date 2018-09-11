@@ -56,4 +56,12 @@ p{
     font-weight: bold;
 
 }
+.restart:hover{
+    margin:3%; 
+    font-size: 4vw;
+    font-style: italic;
+    font-weight: bold;
+    color:red;
+
+}
 

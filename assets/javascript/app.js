@@ -69,8 +69,9 @@ let incorrect;
 let unanswered;
 let secondTimer;
 let questionTimer;
-let totalTimer;
+let responseTimer;
 let objeto;
+let finish = false;
 
 $(document).ready(function () {
 
@@ -78,21 +79,27 @@ $(document).ready(function () {
         $(".timeRemaining").empty();
         $(".question").empty();
         $(".list").empty();
-        $(".restart").empty();
-        $(".boton").empty();
+        $(".restart").hide();
+        $(".boton").hide();
         correct = 0;
         incorrect = 0;
         unanswered = 0;
         totalTimer = 0;
+        finish = false;
+        randomQuestionArray = [];
+        randomAnswerArray = [];
+        questionNumber = 0;
+
         console.log("limpiando campos");
 
     }
 
     function createStartButton() {
-        let boton = $("<button>");
-        boton.addClass("btn btn-primary");
-        $(boton).text("Start");
-        $(".boton").append(boton);
+        // let boton = $("<button>");
+        // boton.addClass("btn btn-primary");
+        // $(boton).text("Start");
+        // $(".boton").append(boton);
+        $(".boton").show();
     }
 
     function randomizeArray(arraySize, array, totalOptions) {
@@ -110,55 +117,95 @@ $(document).ready(function () {
 
     function timer() {
         questionTimer--;
-        totalTimer++;
-        console.log(totalTimer);
         $(".timeRemaining").html("Time Remaining: " + questionTimer + " Seconds");
-        if (questionTimer > 0) {
+        if (questionTimer > 0 && !finish) {
             secondTimer = setTimeout(timer, 1000);
             if (questionTimer < 5) {
                 $(".timeRemaining").attr("style", "color:red");
             }
         }
         else {
+            $(".timeRemaining").text("");
             clearInterval(secondTimer);
+            //if (questionNumber < 4) {
+            if (!finish)
+                unanswered++;
+            startGame();
+            //}
         }
     }
 
+    function responseTimerFun() {
+
+        clearInterval(secondTimer);
+        responseTimer = setTimeout(startGame, 3000);
+
+    }
+
+
     function newQuestion() {
 
-        objeto = "question" + randomQuestionArray[questionNumber];
-        console.log(objeto);
-        console.log(eval(objeto).question);
-        $(".question").text(eval(objeto).question);
-        for (let i = 0; i < 4; i++) {
-            let p = $("<div>");
-            let pd = $("<p>");
-            $(p).addClass("answer");
-            $(p).attr("data-answer", eval(objeto).options[randomAnswerArray[i]]);
-            $(pd).text(eval(objeto).options[randomAnswerArray[i]]);
-            $(p).append(pd);
-            $(".list").append(p);
+        if (questionNumber < 5) {
+            $(".question").empty();
+            $(".list").empty();
+            objeto = "question" + randomQuestionArray[questionNumber];
+            console.log(objeto);
+            console.log(eval(objeto).question);
+            console.log("Question Number: " + questionNumber);
+            $(".list").attr("style", "background-color:rgb(233,235,238);");
+            $(".question").text(eval(objeto).question);
+            for (let i = 0; i < 4; i++) {
+                let p = $("<div>");
+                let pd = $("<p>");
+                $(p).addClass("answer");
+                $(p).attr("data-answer", eval(objeto).options[randomAnswerArray[i]]);
+                $(pd).text(eval(objeto).options[randomAnswerArray[i]]);
+                $(p).append(pd);
+                $(".list").append(p);
+            }
+            questionNumber++;
+        } else {
+            finishGame();
+            console.log("termino preguntas");
+            if (finish)
+                clearInterval(secondTimer);
+
         }
-        questionNumber++;
     }
 
 
     function startGame() {
 
-        questionTimer = 30;
+        questionTimer = 10;
         $(".timeRemaining").text("Time Remaining: " + questionTimer + " Seconds");
         newQuestion();
-        //secondTimer = setTimeout(timer, 1000);
-        //objeto = "question" + randomQuestionArray[0];
-        // console.log(objeto);
-        // console.log(eval(objeto).question);
+        secondTimer = setTimeout(timer, 1000);
+
 
 
     }
 
+    function finishGame() {
+
+        clearInterval(secondTimer);
+        finish = true;
+        $(".timeRemaining").empty();
+        $(".question").empty();
+        $(".list").empty();
+
+        let pa = $("<p>");
+        $(pa).text("Correct: " + correct);
+        $(".question").append(pa);
+        let pb = $("<p>");
+        $(pb).text("Inorrect: " + incorrect);
+        $(".question").append(pb)
+        let pc = $("<p>");
+        $(pc).text("Unanswered: " + unanswered)
+        $(".question").append(pc)
+        $(".restart").show();
 
 
-    //currentTarget.dataset.answer
+    }
 
     clear();
     createStartButton();
@@ -172,23 +219,37 @@ $(document).ready(function () {
             $(image).attr("src", eval(objeto).gif);
             $(image).attr("style", "margin: 0 auto");
             $(".list").append(image);
+            responseTimerFun();
         } else {
             incorrect++;
+            responseTimerFun();
+            $(".list").attr("style", "background-color:red;");
 
         }
         console.log("Correct : " + correct);
         console.log("Incorrect : " + incorrect);
+        console.log("Unanswered : " + unanswered);
 
     });
 
 
     $(".boton").click(function () {
-        $(".boton").empty();
+        $(".boton").hide();
         randomizeArray(4, randomAnswerArray, 4);
         randomizeArray(5, randomQuestionArray, 10);
         console.log("Questions: " + randomQuestionArray);
         console.log("Answers: " + randomAnswerArray);
         startGame();
+
+    });
+
+    $(".restart").click(function () {
+        $(".boton").hide();
+        console.log("restart");
+        clear();
+        $(".boton").show();
+
+
 
     });
 

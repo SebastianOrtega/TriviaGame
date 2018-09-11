@@ -90,7 +90,7 @@ $(document).ready(function () {
         randomAnswerArray = [];
         questionNumber = 0;
 
-        console.log("limpiando campos");
+        //console.log("limpiando campos");
 
     }
 
@@ -117,7 +117,7 @@ $(document).ready(function () {
 
     function timer() {
         questionTimer--;
-        console.log("QuestionTimer: " + questionTimer);
+        //console.log("QuestionTimer: " + questionTimer);
         $(".timeRemaining").html("Time Remaining: " + questionTimer + " Seconds");
         if (questionTimer > 0 && !finish) {
             secondTimer = setTimeout(timer, 1000);
@@ -148,9 +148,9 @@ $(document).ready(function () {
             $(".question").empty();
             $(".list").empty();
             objeto = "question" + randomQuestionArray[questionNumber];
-            console.log(objeto);
-            console.log(eval(objeto).question);
-            console.log("Question Number: " + questionNumber);
+            //console.log(objeto);
+            //console.log(eval(objeto).question);
+            //console.log("Question Number: " + questionNumber);
             $(".list").attr("style", "background-color:rgb(233,235,238);");
             $(".question").text(eval(objeto).question);
             for (let i = 0; i < 4; i++) {
@@ -165,7 +165,7 @@ $(document).ready(function () {
             questionNumber++;
         } else {
             finishGame();
-            console.log("termino preguntas");
+            //console.log("termino preguntas");
             if (finish) {
                 clearInterval(secondTimer);
             }
@@ -212,7 +212,7 @@ $(document).ready(function () {
     createStartButton();
 
     $('.list').on('click', '.answer', function (event) {
-        console.log(event.currentTarget.dataset.answer);
+        //console.log(event.currentTarget.dataset.answer);
         if (event.currentTarget.dataset.answer == eval(objeto).correct) {
             correct++;
             $(".list").empty();
@@ -228,9 +228,9 @@ $(document).ready(function () {
             $(".list").attr("style", "background-color:red;");
 
         }
-        console.log("Correct : " + correct);
-        console.log("Incorrect : " + incorrect);
-        console.log("Unanswered : " + unanswered);
+        //console.log("Correct : " + correct);
+        //console.log("Incorrect : " + incorrect);
+        //console.log("Unanswered : " + unanswered);
 
     });
 
@@ -239,15 +239,15 @@ $(document).ready(function () {
         $(".boton").hide();
         randomizeArray(4, randomAnswerArray, 4);
         randomizeArray(5, randomQuestionArray, 10);
-        console.log("Questions: " + randomQuestionArray);
-        console.log("Answers: " + randomAnswerArray);
+        //console.log("Questions: " + randomQuestionArray);
+        //console.log("Answers: " + randomAnswerArray);
         startGame();
 
     });
 
     $(".restart").click(function () {
         $(".boton").hide();
-        console.log("restart");
+        //console.log("restart");
         clear();
         $(".boton").show();
 
